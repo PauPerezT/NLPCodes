@@ -4,7 +4,7 @@
 @Email:  paulaperezt16@gmail.com
 @Filename: NLP_PreProcessing.py
 # @Last modified by:   Paula Andrea Pérez Toro
-# @Last modified time: 2018-11-28T11:32:29-05:00
+# @Last modified time: 2018-11-28T12:17:24-05:00
 
 """
 ###English implementation in progress
@@ -22,7 +22,6 @@ Variables
 """
 
 #%% Import Libraries
-
 import string
 import spacy
 from nltk.corpus import stopwords
