@@ -4,7 +4,7 @@
 @Email:  paulaperezt16@gmail.com
 @Filename: NLP_FeatureExtraction.py
 # @Last modified by:   Paula Andrea Pérez Toro
-# @Last modified time: 2018-11-28T23:11:02-05:00
+# @Last modified time: 2018-11-29T04:55:02-05:00
 
 """
 
@@ -101,7 +101,8 @@ def Word2VecTraining(Size=200, window=7, min_count=10, Language='spanish'):
     wiki = WikiCorpus('D:/Gita/GITA_Master/Databases/WikiCorpus/eswiki-latest-pages-articles.xml.bz2', lemmatize=False, dictionary={})
     corpus = list(wiki.get_texts())
     #Defining Paramters
-    params = {'size': Size, 'window': window, 'min_count': min_count,}
+    params = {'size': Size, 'window': window, 'min_count': min_count,
+    'workers': max(1, multiprocessing.cpu_count() - 1), 'sample': 1E-3,}
     #Model Training with WikiCorpus
     word2vec = Word2Vec(corpus, **params)
 

@@ -3,7 +3,7 @@
 @Date:   2018-11-28T20:59:24-05:00
 @Email:  paulaperezt16@gmail.com
 # @Last modified by:   Paula Andrea Pérez Toro
-# @Last modified time: 2018-11-28T23:33:31-05:00
+# @Last modified time: 2018-11-29T04:54:40-05:00
 
 """
 from NLP_PreProcessing import noPunctuation, StopWordsRemoval, Lemmatizer
@@ -12,7 +12,8 @@ from os import listdir
 from time import time
 #########Testing Functions#################
 
- start_time = time()
+start_time = time()
+print(start_time)
 
 path="D:/Gita/GITA_Master/NLPCodes/txt_emotion_test/"
 docs=[]
