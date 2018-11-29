@@ -4,7 +4,7 @@
 @Email:  paulaperezt16@gmail.com
 @Filename: NLP_PreProcessing.py
 # @Last modified by:   Paula Andrea Pérez Toro
-# @Last modified time: 2018-11-28T21:34:24-05:00
+# @Last modified time: 2018-11-29T17:51:18-05:00
 
 """
 ###English implementation in progress
@@ -15,6 +15,7 @@
         *noPunctuation: to eliminate the Punctuation
         *StopWordsRemoval: to eliminate stopwords
         *Lemmatizer:
+        *HesitationsRemoval: to remove hesitation labels (for example: [h mm])
 
     #%% Variables %%#
         - Text: text to preprocess
@@ -60,3 +61,15 @@ def Lemmatizer(text,language='spanish'):
         tokenLemma.append(token.lemma_)
     tokenLemma=' '.join(tokenLemma)
     return tokenLemma
+
+#%% HesitationsRemoval
+
+def HesitationsRemoval(text):
+
+    idx1=[n for n in range(len(text)) if text.find('[', n) == n]
+    idx2=[n for n in range(len(text)) if text.find(']', n) == n]
+
+    for i in range(len(idx1)):
+        text=text.replace(text[idx1[i]:idx2[i]+1],"")
+
+    return text
