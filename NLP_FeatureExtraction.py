@@ -4,7 +4,7 @@
 @Email:  paulaperezt16@gmail.com
 @Filename: NLP_FeatureExtraction.py
 # @Last modified by:   Paula Andrea Pérez Toro
-# @Last modified time: 2018-11-28T19:38:56-05:00
+# @Last modified time: 2018-11-28T21:40:08-05:00
 
 """
 
@@ -41,6 +41,8 @@
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from gensim import corpora
 from gensim.corpora.wikicorpus import IGNORED_NAMESPACES, WikiCorpus, filter_wiki, find_interlinks, get_namespace, utils
+from gensim.test.utils import datapath, get_tmpfile
+from gensim.corpora import WikiCorpus, MmCorpus
 import multiprocessing
 from gensim.corpora.wikicorpus import WikiCorpus
 from gensim.models.word2vec import Word2Vec
@@ -60,7 +62,7 @@ def Bag_of_WordsFT(texts):
 #%% Statistical Features: TF-IDF
 def TF_IDF(texts):
     obj=TfidfVectorizer()
-    tfi_idf=obj.fit_transform(corpus).toarray()
+    tfi_idf=obj.fit_transform(texts).toarray()
     return tfi_idf
 
 #%% Entity Extraction: Topic Modeling-LDA
@@ -87,7 +89,7 @@ def LDA(texts,topicsNumber=100,passesNumber=50, Language='spanish'):
     return docs
 
 #%% Word Emmbbedings: Word2Vec
-def Word2Vec(texts, Size=200, window=10, min_count=10, Language='spanish'):
+def Word2Vec(texts, Size=200, window=7, min_count=10, Language='spanish'):
 
     #Using WikiCorpus in Spanish Version
     wiki = WikiCorpus('D:/Gita/GITA_Master/Databases/WikiCorpus/eswiki-latest-pages-articles.xml.bz2', lemmatize=False, dictionary={})

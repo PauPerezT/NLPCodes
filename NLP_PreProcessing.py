@@ -4,7 +4,7 @@
 @Email:  paulaperezt16@gmail.com
 @Filename: NLP_PreProcessing.py
 # @Last modified by:   Paula Andrea Pérez Toro
-# @Last modified time: 2018-11-28T18:15:46-05:00
+# @Last modified time: 2018-11-28T21:34:24-05:00
 
 """
 ###English implementation in progress
@@ -44,17 +44,19 @@ def noPunctuation(text):
 def StopWordsRemoval(text,language='spanish'):
     #Now eliminate stopwords
     clean_sentence= [word for word in text.split() if word.lower() not in stopwords.words('spanish')]
+    clean_sentence=' '.join(clean_sentence)
 
     return clean_sentence
 
 #%% Lemmatizer
 def Lemmatizer(text,language='spanish'):
     nlp = spacy.load('es_core_news_sm')
+    #nlp = spacy.load('es_core_news_md')
     doc = nlp(text)
     tokenLemma=[]
 
     for token in doc:
-        print(token, token.lemma, token.lemma_)
+        #print(token, token.lemma, token.lemma_)
         tokenLemma.append(token.lemma_)
-
+    tokenLemma=' '.join(tokenLemma)
     return tokenLemma
