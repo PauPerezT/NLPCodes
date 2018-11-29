@@ -3,38 +3,27 @@
 @Date:   2018-11-28T20:59:24-05:00
 @Email:  paulaperezt16@gmail.com
 # @Last modified by:   Paula Andrea Pérez Toro
-# @Last modified time: 2018-11-28T21:55:03-05:00
+# @Last modified time: 2018-11-28T23:23:12-05:00
 
 """
 from NLP_PreProcessing import noPunctuation, StopWordsRemoval, Lemmatizer
-from NLP_FeatureExtraction import Bag_of_WordsFT, TF_IDF, LDA, Word2Vec
-
+from NLP_FeatureExtraction import Bag_of_WordsFT, TF_IDF, LDADictionary, LDA, Word2VecTraining, Word2VecFTE
+from os import listdir
 #########Testing Functions#################
-f = open ('D:/Gita/GITA_Master/NLPCodes/030YHC_S1_monologue.txt','r')
-text = f.read()
+
+path="D:/Gita/GITA_Master/NLPCodes/txt_emotion_test/"
+docs=[]
+for file in listdir(path):
+    f = open (path+file,'r')
+    text = f.read()
+    ProcessingText_NP=noPunctuation(text)
+    ProcessingText_SW=StopWordsRemoval(ProcessingText_NP)
+    ProcessingText_LMM=Lemmatizer(ProcessingText_SW)
+    docs.append(ProcessingText_LMM)
 
 f.close()
 
-text2='Yo claro que tenía una vida, y mantengo un futuro y me quiero mucho'
-print('%%%%%%%%%%%Texto Normal%%%%%%%%%%%%%%%%%')
-print(text)
-ProcessingText1=noPunctuation(text)
-ProcessingText2=noPunctuation(text2)
-print('%%%%%%%%%%%Sin puntuacion%%%%%%%%%%%%%%%%%')
-print(ProcessingText1)
-#print(ProcessingText2)
-ProcessingText21=StopWordsRemoval(ProcessingText1)
-print('%%%%%%%%%%%Sin stopwords%%%%%%%%%%%%%%%%%')
-print(ProcessingText21)
-ProcessingText22=StopWordsRemoval(ProcessingText2)
-#print(ProcessingText22)
-ProcessingText31=Lemmatizer(ProcessingText21)
-print('%%%%%%%%%%%Lematizado%%%%%%%%%%%%%%%%%')
-print(ProcessingText31)
 
-ProcessingText32=Lemmatizer(ProcessingText22)
-#print(ProcessingText32)
-docs=[ProcessingText31,ProcessingText32]
 
 FTBoW=Bag_of_WordsFT(docs)
 print('%%%%%%%%%%%Bag of words%%%%%%%%%%%%%%%%%')
@@ -47,8 +36,10 @@ print(FTTF_IDF)
 
 
 
-FTLDA=LDA(docs)
+LDADictionary=LDADictionary()
+FTLDA=LDA(texts=docs,dictionary=LDADictionary)
 print(FTLDA)
 
-FTWord2Vec=LDA(docs)
+Word2VecModel=Word2VecTraining()
+FTWord2Vec=Word2VecFTE(docs,Word2VecModel)
 print(FTWord2Vec)
