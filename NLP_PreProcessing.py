@@ -4,21 +4,22 @@
 @Email:  paulaperezt16@gmail.com
 @Filename: NLP_PreProcessing.py
 # @Last modified by:   Paula Andrea Pérez Toro
-# @Last modified time: 2018-11-28T12:17:24-05:00
+# @Last modified time: 2018-11-28T18:15:46-05:00
 
 """
 ###English implementation in progress
 """
-Natural Language Basic preprocessing code
+#%%%%%%% Natural Language Basic preprocessing code %%%%%%%#
 
-Contains
-*noPunctuation: to eliminate the Punctuation
-*StopWordsRemoval: to eliminate stopwords
-*Lemmatizer:
+    #%% Contains %%#
+        *noPunctuation: to eliminate the Punctuation
+        *StopWordsRemoval: to eliminate stopwords
+        *Lemmatizer:
 
-Variables
-- Text: text to preprocess
-- Language: 'spanish' or 'english'
+    #%% Variables %%#
+        - Text: text to preprocess
+        - Language: 'spanish' or 'english'
+
 """
 
 #%% Import Libraries

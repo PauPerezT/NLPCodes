@@ -4,9 +4,38 @@
 @Email:  paulaperezt16@gmail.com
 @Filename: NLP_FeatureExtraction.py
 # @Last modified by:   Paula Andrea Pérez Toro
-# @Last modified time: 2018-11-28T17:25:48-05:00
+# @Last modified time: 2018-11-28T19:38:56-05:00
 
 """
+
+###English implementation in progress
+"""
+#%%%%%%% Natural Language Basic Feature Extraction code %%%%%%%#
+
+    #%% Contains %%#
+        *Statistical Features:
+            - Bag of Words
+            - TF-IDF
+        *Entity Extraction:
+            - Topic Modeling-LDA
+        *Word Emmbbedings:
+            - Word2Vec
+
+    #%% Global Variables %%#
+        - Texts: PreProcessing text to extract features
+        - Language: 'spanish' or 'english'
+
+    #%% LDA Variables %%#
+        - topicsNumber: number of topics to choose
+        - passesNumber: numer of passes through the corpus during training
+
+    #%% Word2Vec Variables %%#
+        - size: dimensionality of the word vectors.
+        - window: maximum distance between the current and predicted word within a sentence.
+        - min_count: ignores all words with total frequency lower than this.
+"""
+
+
 
 #%% Import Libraries
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
@@ -15,10 +44,10 @@ from gensim.corpora.wikicorpus import IGNORED_NAMESPACES, WikiCorpus, filter_wik
 import multiprocessing
 from gensim.corpora.wikicorpus import WikiCorpus
 from gensim.models.word2vec import Word2Vec
-
+import numpy as np
 
 #%% Statistical Features: Bag of Words
-def Bag_of_WordsFT(textx):
+def Bag_of_WordsFT(texts):
     #instantiate the vectorizer
     vectorizer= CountVectorizer(texts)  #to tokenize the document
     #fit them as bag of words
@@ -35,7 +64,7 @@ def TF_IDF(texts):
     return tfi_idf
 
 #%% Entity Extraction: Topic Modeling-LDA
-def LDA(texts,topicsNumber=100,passesNumber=50):
+def LDA(texts,topicsNumber=100,passesNumber=50, Language='spanish'):
     path_to_wiki_dump = datapath('D:/Gita/GITA_Master/Databases/WikiCorpus/eswiki-latest-pages-articles.xml.bz2')
     corpus_path = get_tmpfile("wiki-corpus.mm")
 
@@ -58,24 +87,22 @@ def LDA(texts,topicsNumber=100,passesNumber=50):
     return docs
 
 #%% Word Emmbbedings: Word2Vec
-def Word2Vec(texts, Size=200, window=10, min_count=10):
+def Word2Vec(texts, Size=200, window=10, min_count=10, Language='spanish'):
 
     #Using WikiCorpus in Spanish Version
     wiki = WikiCorpus('D:/Gita/GITA_Master/Databases/WikiCorpus/eswiki-latest-pages-articles.xml.bz2', lemmatize=False, dictionary={})
     corpus = list(wiki.get_texts())
     #Defining Paramters
-    params = {'size': Size, 'window': window, 'min_count': min_count,
-              'workers': max(1, multiprocessing.cpu_count() - 1),}
+    params = {'size': Size, 'window': window, 'min_count': min_count,}
     #Model Training with WikiCorpus
     word2vec = Word2Vec(corpus, **params)
 
     #To save features (each word)
     doc=[]
 
-for tx in range (len(texts)):
-    words=[]
-    for w in range (len(texts[tx])):
-        words.append(model[texts[tx][w]])
-    doc.append(words)
-
-    ###I HAVE TO FINISH IT####
+    for tx in range (len(texts)):
+        words=[]
+        for w in range (len(texts[tx])):
+            words.append(model[texts[tx][w]])
+        doc.append(np.mean(words))
+    return doc
