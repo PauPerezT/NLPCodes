@@ -4,7 +4,7 @@
 @Email:  paulaperezt16@gmail.com
 @Filename: NLP_FeatureExtraction.py
 # @Last modified by:   Paula Andrea Pérez Toro
-# @Last modified time: 2018-11-29T04:55:02-05:00
+# @Last modified time: 2018-11-29T18:38:57-05:00
 
 """
 
@@ -47,6 +47,7 @@ import multiprocessing
 from gensim.corpora.wikicorpus import WikiCorpus
 from gensim.models.word2vec import Word2Vec
 import numpy as np
+from scipy.stats import kurtosis, skew
 
 #%% Statistical Features: Bag of Words
 def Bag_of_WordsFT(texts):
@@ -73,11 +74,12 @@ def LDADictionary(Language='spanish'):
     wiki = WikiCorpus(path_to_wiki_dump) # create word->word_id mapping, ~8h on full wiki
     MmCorpus.serialize(corpus_path, wiki) # another 8h, creates a file in MatrixMarket format and mapping
     dictionary=wiki.dictionary
-
+################TODO: Save Dictionary####################
     return dictionary
 
-def LDA(texts, dictionary,topicsNumber=100,passesNumber=50, Language='spanish'):
-
+def LDA(texts, dictionaryPath,topicsNumber=100,passesNumber=5, Language='spanish'):
+    #Reading the dictionary
+    dictionary = corpora.Dictionary.load(dictionaryPath)
     #Converting list of documents (corpus) into document term Matric using dictionary prepare above.
     doc_term_matrix=[]
     for i in range (len(texts)):
@@ -106,7 +108,7 @@ def Word2VecTraining(Size=200, window=7, min_count=10, Language='spanish'):
     #Model Training with WikiCorpus
     word2vec = Word2Vec(corpus, **params)
 
-
+################TODO: Save model####################
 
     return word2vec
 
@@ -120,6 +122,11 @@ def Word2VecFTE(texts, Word2Vec):
         words=[]
         for w in range (len(texts[tx])):
             words.append(Word2Vec[texts[tx][w]])
-        doc.append(np.mean(words))
+        meanW2V=np.mean(np.hstack(words))
+        stdW2V=np.std(np.hstack(words))
+        kurtosisW2V=kurtosis(np.hstack(words))
+        skewnessW2V=skew(np.hstack(words))
+        statisticalMeasures=[meanW2V, stdW2V, kurtosisW2V, skewnessW2V]
+        doc.append(statisticalMeasures)
 
     return doc
