@@ -4,7 +4,7 @@
 @Email:  paulaperezt16@gmail.com
 @Filename: NLP_FeatureExtraction.py
 # @Last modified by:   Paula Andrea Pérez Toro
-# @Last modified time: 2018-11-28T21:40:08-05:00
+# @Last modified time: 2018-11-28T23:11:02-05:00
 
 """
 
@@ -66,21 +66,27 @@ def TF_IDF(texts):
     return tfi_idf
 
 #%% Entity Extraction: Topic Modeling-LDA
-def LDA(texts,topicsNumber=100,passesNumber=50, Language='spanish'):
+def LDADictionary(Language='spanish'):
     path_to_wiki_dump = datapath('D:/Gita/GITA_Master/Databases/WikiCorpus/eswiki-latest-pages-articles.xml.bz2')
     corpus_path = get_tmpfile("wiki-corpus.mm")
 
     wiki = WikiCorpus(path_to_wiki_dump) # create word->word_id mapping, ~8h on full wiki
     MmCorpus.serialize(corpus_path, wiki) # another 8h, creates a file in MatrixMarket format and mapping
+    dictionary=wiki.dictionary
+
+    return dictionary
+
+def LDA(texts, dictionary,topicsNumber=100,passesNumber=50, Language='spanish'):
+
     #Converting list of documents (corpus) into document term Matric using dictionary prepare above.
     doc_term_matrix=[]
     for i in range (len(texts)):
-        doc_term_matrix.append(wiki.dictionary.doc2bow
+        doc_term_matrix.append(dictionary.doc2bow
         (gensim.corpora.wikicorpus.tokenize(texts[i])))
     #Creating the object for LDA model using gensim library
     Lda=gensim.models.ldamodel.LdaModel
     #Results
-    ldamodel= Lda(doc_term_matrix, num_topics=topicsNumber, id2word=wiki.dictionary, passes=passesNumber)
+    ldamodel= Lda(doc_term_matrix, num_topics=topicsNumber, id2word=dictionary, passes=passesNumber)
     ldaTopics=ldamodel[doc_term_matrix]
     #Extract the value of each topic
     for doc in ldaTopics:
@@ -89,7 +95,7 @@ def LDA(texts,topicsNumber=100,passesNumber=50, Language='spanish'):
     return docs
 
 #%% Word Emmbbedings: Word2Vec
-def Word2Vec(texts, Size=200, window=7, min_count=10, Language='spanish'):
+def Word2VecTraining(Size=200, window=7, min_count=10, Language='spanish'):
 
     #Using WikiCorpus in Spanish Version
     wiki = WikiCorpus('D:/Gita/GITA_Master/Databases/WikiCorpus/eswiki-latest-pages-articles.xml.bz2', lemmatize=False, dictionary={})
@@ -99,12 +105,20 @@ def Word2Vec(texts, Size=200, window=7, min_count=10, Language='spanish'):
     #Model Training with WikiCorpus
     word2vec = Word2Vec(corpus, **params)
 
+
+
+    return word2vec
+
+
+def Word2VecFTE(texts, Word2Vec):
+
     #To save features (each word)
     doc=[]
 
     for tx in range (len(texts)):
         words=[]
         for w in range (len(texts[tx])):
-            words.append(model[texts[tx][w]])
+            words.append(Word2Vec[texts[tx][w]])
         doc.append(np.mean(words))
+
     return doc
