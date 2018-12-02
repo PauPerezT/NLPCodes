@@ -4,7 +4,7 @@
 @Email:  paulaperezt16@gmail.com
 @Filename: NLP_FeatureExtraction.py
 # @Last modified by:   Paula Andrea Pérez Toro
-# @Last modified time: 2018-11-29T18:38:57-05:00
+# @Last modified time: 2018-12-01T21:05:51-05:00
 
 """
 
@@ -77,7 +77,7 @@ def LDADictionary(Language='spanish'):
 ################TODO: Save Dictionary####################
     return dictionary
 
-def LDA(texts, dictionaryPath,topicsNumber=100,passesNumber=5, Language='spanish'):
+def LDA(texts, dictionaryPath,topicsNumber=10,passesNumber=100, Language='spanish'):
     #Reading the dictionary
     dictionary = corpora.Dictionary.load(dictionaryPath)
     #Converting list of documents (corpus) into document term Matric using dictionary prepare above.
@@ -97,7 +97,7 @@ def LDA(texts, dictionaryPath,topicsNumber=100,passesNumber=5, Language='spanish
     return docs
 
 #%% Word Emmbbedings: Word2Vec
-def Word2VecTraining(Size=200, window=7, min_count=10, Language='spanish'):
+def Word2VecTraining(Size=200, window=7, min_count=5, Language='spanish'):
 
     #Using WikiCorpus in Spanish Version
     wiki = WikiCorpus('D:/Gita/GITA_Master/Databases/WikiCorpus/eswiki-latest-pages-articles.xml.bz2', lemmatize=False, dictionary={})
